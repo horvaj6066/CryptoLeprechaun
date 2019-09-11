@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Financial Plot</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <!-- <link rel="stylesheet" href="../css/style.css"> -->
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/bootstrap.min.css') }}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
+</head>
+
+<body>
+  <!-- Navbar set up to link to other pages as well as provide a quick link to take straight to the charts -->
+
+  
+  
+  <nav class="navbar navbar-default">
+      <div class="container-fluid navbar-custom">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle Navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <div class="col-md-9 col-md-offset-1">
+              <a class="navbar-brand" href="/" id="logo" style="position: relative; left:30px">CryptoLeprechaun</a>
+            </div>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right navbar-right-custom">
+              <!--<li><a href="#charts">Bitcoin Charts</a></li> -->
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  Project Info 
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/candlestick">Candstick Chart History and Info</a></li>
+                  <li><a href="/project_info">Project Info</a></li>
+                  <!-- <li><a href="/project_team">Team Info</a></li> -->
+                </ul>
+              </li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div>
+      </div><!-- /.container-fluid -->
+    </nav>
+    <!-- End of navbar -->
+ <!-- Set up header image and project title -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- <div class="col-md-10 col-md-offset-1 jumbotron text-center">
+        <h1 class="header">Crypto Leprachaun</h1>
+        <h3 class="subheader">Analyzing your digital pot of gold!</h3>
+      </div> -->
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h4 class="header">LSTM Recurrent Neural Network</h4>
+            </div>
+            <div class="col-md-6 col-md-offset-1" style="margin-top: 10pt; margin-bottom: 10pt">
+                <p style="margin-top: 5pt">Welcome to Cryptoleprechaun where we unleash the power of machine learning to predict the price of Bitcoin!
+                    We are using a Recurrent Neural Network based on a Keras LSTM Model as these tend to work well on time-series data. Neural networks are very interesting because they try to mimick some of the neurons in our brains in how they learn to solve problems. We have used almost three years of historical data to train our model and after many thousands of training iterations we are ready to unleash the model to make live predictions!</p>
+                <h4 style="margin-top: 10pt">We are using the following six inputs to our model and the time frame is daily: </h4>
+                <h4 style="margin-top: 10pt">OHLC Price Data</h4>
+                <p style="margin-top: 5pt">We are using Open, High, Low, Close price data scraped from various exchanges and averaged. </p>
+                <h4 style="margin-top: 10pt">Unit Volume</h4>
+                <p style="margin-top: 5pt">We are using total volume of spot Bitcoin traded on exchanges that is scraped.</p>
+                <h4 style="margin-top: 10pt">Bitmex Funding Rate</h4>
+                <p style="margin-top: 5pt">Funding rate for the popular Bitmex XBT perpetual swap contract which we think is a good indicator of investor sentiment. We get this data through API.</p>
+                <h4 style="margin-top: 10pt">Future Additional Inputs</h4>
+                <p style="margin-top: 5pt">Looking at adding some moving averages and exponential moving averages in the future. We have considered adding sentiment data that you might gather from Twitter or Redditt however we rejected this on the basis of it being too subjective.</p>
+                <h4 style="margin-top: 15pt">We did extensive tuning to our model and these settings are the ones that got us the highest accuracy: </h4>
+                <ul>
+                    <li><p style="margin-top: 15pt">Epochs: 200</p></li>
+                    <li><p style="margin-top: 5pt">Batch Size: 128</p></li>
+                    <li><p style="margin-top: 5pt">Sequence Length: 30</p></li>
+                    <li><p style="margin-top: 5pt">Dropout: .2</p></li>
+                    <li><p style="margin-top: 5pt">Optimizer: Adam</p></li>
+                    <li><p style="margin-top: 5pt">Loss Function: MSE</p></li>
+                    <li><p style="margin-top: 5pt">Activation Function: Linear</p></li>
+                </ul>
+                <h4 style="margin-top: 15pt">We gave the most weight to accuracy for model selection but here's all the relevant performance statistics for the prediction model we are using: </h3>
+                <ul>
+                    <li><p style="margin-top: 15pt">Accuracy: 0.563</p></li>
+                    <li><p style="margin-top: 5pt">Precision: 0.64</p></li>
+                    <li><p style="margin-top: 5pt">Recall: .542</p></li>
+                    <li><p style="margin-top: 5pt">F1 Score: .587</p></li>
+                    <li><p style="margin-top: 5pt">MSE: 0.020706 </p></li>
+                </ul>
+                
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Financial Plot</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <!-- <link rel="stylesheet" href="../css/style.css"> -->
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/bootstrap.min.css') }}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
+</head>
+
+<body>
+  <!-- Navbar set up to link to other pages as well as provide a quick link to take straight to the charts -->
+
+  
+  
+  <nav class="navbar navbar-default">
+      <div class="container-fluid navbar-custom">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle Navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <div class="col-md-9 col-md-offset-1">
+              <a class="navbar-brand" href="/" id="logo" style="position: relative; left:30px">CryptoLeprechaun</a>
+            </div>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right navbar-right-custom">
+              <!--<li><a href="#charts">Bitcoin Charts</a></li>-->
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  Project Info 
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/candlestick">Candstick Chart History and Info</a></li>
+                  <li><a href="/project_info">Project Info</a></li>
+                  <!-- <li><a href="/team_info">Team Info</a></li> -->
+                </ul>
+              </li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <h3 class="header">Candlestick Charts- History and Model Input Info</h3>
+                    <p style="margin-top: 10pt">A candlestick chart is a style of financial chart used to visualize price movements of a security, derivative, or currency. 
+                        A "candlestick" can be used to visualize any time frame (minute, hourly, daily, weekly, monthly) depending on your time horizon. We've chosen to use the one day timeframe which means that a one-month chart will show the 30 trading days as 30 "candlesticks".
+                        Day traders might use time intervals as short as a minute or less while a longer term investor might use a weekly or even montly time frame. Candlestick charts are thought to have been developed in the 18th century in Japan by Munehisa Homma who used them to trade rice futures.  
+                        They quickly gained traction in the West in the 1970s and are now the predominant chart type for both technical and fundamental traders/analysts.  
+                    
+                      </p>
+                    <p>OHLC: Candlesticks are usually composed of a rectangular body, which is green or red in most cases but sometimes white and black. The body is the difference between the opening and closing price. If the candle closes higher than it opened, it will be green, and conversely if it closes lower it will be red. 
+                       In addition to the body there is an upper and lower shadow called a wick. The wick shows the highest and lowest prices traded above and below the body. A candlestick can be completely described by 4 numbers: the open, high, low, and close (OHLC). 
+                    
+                    </p>
+                    <p>  
+                      Volume: In addition to the OHLC there is one more important descriptive metric necessary to read candlestick charts, the volume. The volume tells you whether a movement in price is based on underlying demand/supply or manipulation by other market participants. Volume is much more difficult and expensive to manipulate then price action. 
+                      So when we see a candlestick chart of Bitcoin pricing starting to rally over a few days, the first thing we look to is volume for confirmation- is it steady and increasing or at least above average?      
+                        
+                     </p>
+                     <p>  
+                      Bitmex Funding Rate: Bitmex is a crypto currency futures exchanges where an extremely high volume and widely followed perpetual Bitcoin futures contract (XBT) is traded. There is a funding rate associated witht this contract that is a good indicator of investor sentiment and how they are positioned.         
+                        
+                     </p>
+                     <h4 class="header">Data Sources</h4>
+                     There are currently 6 inputs to our model currently, the OHLC, volume, and the Bitmex funding rate. The OHLC and volume data is scraped from the web and is an aggregation of most Bitcoin exchanges. Even though Bitcoin never stops trading the daily candle close is at 5PM PT so this is when we update the charts and make our Bitcoin price forecast for the following day close.  
+                     The Bitmex Funding rate is taken from Bitmex via API also at 5PM PT. We are considering adding some popular moving averages to the model next.       
+                      
+                    </p>
+                  </p>
+                  <h4 class="header">Model Predictions and Profit and Loss (PnL)</h4>
+                  Embedded in the Candlestick chart as purple horizontal lines are the Bitcoin price predictions from the machine learning model. There are just over 100 days of predictions from historical test data and each day a new live prediction is added also at 5PM. We summarize the profit and loss of these predictions in a bar chart below the candlestick chart but there is also a summary of the PnL of the most recent prediction but also of all the visible test data at the bottom below the charts. 
+                  The profit is calculated based on deploying a long/short strategy on one Bitcoin based on the predictions. If the day's Bitcoin price prediction is above that day's close one Bitcoin is purchased and profits calculated for that one 24 hour trade. And, conversely if the prediction is below the close one Bitcoin is shorted. Real world costs like commissions and slippage are not taken into account in our PnL calculations currently. The return for a buy and hold strategy over the same period is also calculated for comparison.                   
+                                     
+                 </p>
+                 <!-- 
+                  </p>
+                  <h4 class="header">Test Data Predictions and Profit Bars</h4>
+                  You'll notice there are purple horizontal lines embedded in the Candlestick chart. The window below the Candlestick chart olume bars contains red and green bars visualizing the profitability of the predictions.   
+                  The Bitmex Funding rate is an indication of investor sentiment and this is taken from Bitmex via API also at 5PM PT.      
+                   
+                 </p>
+                  Don't forget need "python -m http.server 5000" to see image below
+                  <div class="col-md-10 col-md-offset-1" style="margin-top: 15pt; margin-bottom: 20pt">
+                    <h4 class="header" style="margin-bottom: 25pt">Example of rising volume forecasting a sustainable move up: </h4>
+                    <img src="1D_vol_ramp.PNG" height="400" width="400" />  -->
+                     
+                  </div>
+              </div>
+                
+      </div>
+</body>
+
+    

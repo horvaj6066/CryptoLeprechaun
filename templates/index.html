@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Financial Plot</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <!-- <link rel="stylesheet" href="../css/style.css"> -->
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/bootstrap.min.css') }}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
+  <link rel="stylesheet" href= "{{ url_for('static',filename='css/iThing.css') }}">
+  <script type="text/javascript" src="../static/js/jquery.js"></script>
+  <script type="text/javascript" src="../static/js/jquery-ui.js"></script>
+  <script type="text/javascript" src="../static/js/jQDateRangeSlider-min.js"></script>  
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icon/favicon.ico') }}">
+
+  
+</head>
+
+<body>
+  <!-- Navbar set up to link to other pages as well as provide a quick link to take straight to the charts -->
+  
+  <nav class="navbar navbar-default">
+      <div class="container-fluid navbar-custom">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle Navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <div class="col-md-9 col-md-offset-1">
+              <a class="navbar-brand" href="/" id="logo" style="position: relative; left:20px">CryptoLeprechaun</a>
+            </div>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right navbar-right-custom">
+              <!--<li><a href="#charts">Bitcoin Charts</a></li>-->
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  Project Info 
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/candlestick">Candlestick Chart History and Info</a></li>
+                  <li><a href="/project_info">Model Parameters and Inputs</a></li>
+                  <!-- <li><a href="/team_info">Team Info</a></li> -->
+                </ul>
+              </li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div>
+      </div><!-- /.container-fluid -->
+    </nav>
+    <!-- End of navbar -->
+ <!-- Set up header image and project title -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1 jumbotron text-center">
+        <h1 class="header">CryptoLeprechaun</h1>
+        <h2 class="subheader">Unleash the machines to predict Bitcoin price!</h2>
+        <h2 class="subheader">Prediction issued 5PM PT each day for next day 5PM close</h2>
+        <h2 class="subheader">Count down with us to the next prediction!</h2>
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="center-block">
+        <img src="https://media.giphy.com/media/nck0yE5BTqnuXhh3hl/giphy.gif" class="center-block">
+    </div> -->
+  </div>
+  <div class="container-fluid">
+    <a name="charts"></a>
+    <!-- <div class="row">
+      <h2 class="text-center">Bitcoin Trading volume</h2>
+    </div> -->
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1 text-center">
+          <h1>Aggregate Exchange Bitcoin 1D Price & Volume Chart</h1>
+        </div>
+        </div>
+        <!--  <div class="col-md-4 col-md-offset-2">
+            <h4>Visualizing Profitability of Our Prediction Model</h4>
+            <p>The lower area with the green bars above and red below is to visualize the profitability of the predictions based on the training data on a daily basis. This is the daily PnL from buying one Bitcoin each day if the prediction for the following day is above the current close and shorting one Bitcoin if the prediction is below the close.  </p>
+          </div>   
+         <div class="col-md-2 text-left">
+        <h5>Select Date Range</h5>
+      </div> -->
+      <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+          <div id="slider"></div>
+         
+      </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div id="svg-area" class="panel-body"></div>
+              <script type="text/javascript" src="static/js/app.js"></script>
+          </div>
+          <!-- insert descriptions of the different elements of our charts -->
+          <div class="row">
+            <div class="col-md-4 col-md-offset-2">
+              <h4>Machine Learning with an Recurrent Neural Network</h4>
+              <p>I applied a specific type of recurrent neural network (RNN) to forecast Bitcoin price. This type is called a Long Short Term Memory (LSTM) and has feedback loops in order to be able to apply predictions to a time-series. Please click on the the Project Info drop down menu in the top right for more information on the model and parameters that I used.  </p>
+            </div>
+            <div class="col-md-4">
+              <h4>Visualizing the Profitability of Our Prediction Model</h4>
+              <p>In the Candlestick chart, the purple horizontal lines are the price predictions made each day by the machine learning model. The bar chart below the Candlestick chart show the daily profitability (PnL) from buying or shorting one Bitcoin each day based on our model's price prediction. There is just over a hundred price predictions based on the test data and we add to this each day with one live prediction at 5PM PT. Use the date slider above the Candlestick chart to isolate date ranges of interest and this will also update the hit rate and profitability summary statistics. </p>
+            </div>
+
+  </div>
+
+  <footer class="footer navbar-fixed-bottom">
+      <div class="two-toned-footer-color"></div>
+      <p class="text-muted text-muted-footer text-center">
+        &copy; Copyright Jon P. Horvath 2019
+      </p>
+    </footer>
+
+  
+<!-- <script src="static/js/plots.js"></script> -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+</body>
+
+</html>
